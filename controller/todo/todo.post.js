@@ -5,8 +5,8 @@ const { v4 } = require("uuid");
 const createTask = (req, res) => {
     const name = req.body.name;
     if (!name) { return res.status(400).json(error(" Поле name пустое")) };
-    if (name.length < 2) return res.status(400).json(error("Поле записи менеьше 2 символов"));
-    const repeatTask = tasks.findIndex((el) => el.name === name);
+    if (name.length < 2) return res.status(400).json(error("Поле записи меньше 2 символов"));
+    const repeatTask = tasks.todos.findIndex((el) => el.name === name);
     if (repeatTask !== -1) return res.status(400).json(error("Такая задача уже есть!"));
     try {
         const task = { uuid: v4(), name: req.body.name, done: false, updatedAtt: new Date() }
