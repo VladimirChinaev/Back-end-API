@@ -9,22 +9,22 @@ const get = async (req, res) => {
     const offset = page * limit - limit;
     let filteredTasks;
     if (!filterByDoneUndone) {
-        filteredTasks = tasks.name
+        filteredTasks = tasks.todos
     } else {
-        filteredTasks = tasks.name.filter(el => el.done === filterByDoneUndone)
+        filteredTasks = tasks.todos.filter(el => el.done === filterByDoneUndone)
     }
 
 
     if (filterDyAscDesc === "desc") {
         filteredTasks = filteredTasks.sort(
             (a, b) => {
-                if (a.date < b.date) { return 1 }
+                if (a.updatedAtt < b.updatedAtt) { return 1 }
                 else { return -1 }
             })
     } else {
         filteredTasks = filteredTasks.sort(
             (a, b) => {
-                if (a.date > b.date) { return 1 }
+                if (a.updatedAtt > b.updatedAtt) { return 1 }
                 else { return -1 }
             })
     }
