@@ -13,8 +13,6 @@ const get = async (req, res) => {
     } else {
         filteredTasks = tasks.todos.filter(el => el.done === filterByDoneUndone)
     }
-
-
     if (filterDyAscDesc === "desc") {
         filteredTasks = filteredTasks.sort(
             (a, b) => {
@@ -28,13 +26,10 @@ const get = async (req, res) => {
                 else { return -1 }
             })
     }
-
     return res.json({
         page,
         limit,
         data: filteredTasks.slice(offset, offset + limit)
     })
-
-
 }
 module.exports = get;
