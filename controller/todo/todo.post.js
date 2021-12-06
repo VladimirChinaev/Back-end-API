@@ -3,6 +3,7 @@ const fs = require('fs');
 let tasks = require(path.resolve("db.json"));
 const { v4 } = require("uuid");
 const createTask = (req, res) => {
+    console.log(12351253123);
     const name = req.body.name;
     if (!name) { return res.status(400).json(" Поле name пустое") };
     if (name.length < 2) return res.status(400).json("Поле записи меньше 2 х символов");
@@ -16,9 +17,10 @@ const createTask = (req, res) => {
                 console.log(err);
             }
         });
+        res.send(task);
     } catch (err) {
         console.log(err);
+        res.send("askdgaksjd");
     }
-    return res.json([]);
 }
 module.exports = createTask;
