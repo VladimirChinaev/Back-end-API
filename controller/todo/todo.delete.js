@@ -1,11 +1,8 @@
-const path = require('path');
-const fs = require('fs');
+const path = require("path");
+const fs = require("fs");
 let tasks = require(path.resolve("db.json"));
-const { v4 } = require("uuid");
-
 
 const deleteTask = (req, res) => {
-    console.log(tasks.todos.length);
     const id = req.params.uuid;
     let index = -1;
     for (let i = 0; i < tasks.todos.length; i++) {
@@ -23,6 +20,5 @@ const deleteTask = (req, res) => {
         res.status(404).send();
         console.log("not found");
     }
-}
+};
 module.exports = deleteTask;
-
