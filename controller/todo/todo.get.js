@@ -9,9 +9,11 @@ const get = async (req, res) => {
     const offset = page * limit - limit;
     let filteredTasks;
     if (!filterByDoneUndone) {
-        filteredTasks = tasks.todos
+        filteredTasks = tasks.todos;
     } else {
-        filteredTasks = tasks.todos.filter(el => el.done === filterByDoneUndone)
+        console.log(filterByDoneUndone);
+        filteredTasks = tasks.todos.filter(el => el.done === filterByDoneUndone);
+        console.log(filteredTasks);
     }
     if (filterDyAscDesc === "desc") {
         filteredTasks = filteredTasks.sort(

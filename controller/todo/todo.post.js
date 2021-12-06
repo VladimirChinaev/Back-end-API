@@ -9,7 +9,7 @@ const createTask = (req, res) => {
     const repeatTask = tasks.todos.findIndex((el) => el.name === name);
     if (repeatTask !== -1) return res.status(400).json("Такая задача уже есть!");
     try {
-        const task = { uuid: v4(), name: req.body.name, done: false, updatedAtt: new Date() };
+        const task = { uuid: v4(), name: req.body.name, done: "undone", updatedAtt: new Date() };
         tasks.todos = [...tasks.todos, task];
         fs.writeFile("db.json", JSON.stringify(tasks), (err) => {
             if (err) {

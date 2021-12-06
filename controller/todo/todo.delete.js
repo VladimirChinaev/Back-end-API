@@ -14,9 +14,6 @@ const deleteTask = (req, res) => {
             break;
         }
     }
-    console.log(id);
-    console.log(tasks.todos.length);
-    console.log(index);
     if (index > -1) {
         const task = tasks.todos.splice(index, 1)[0];
         fs.writeFileSync("db.json", JSON.stringify(tasks));
