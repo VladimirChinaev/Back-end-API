@@ -1,24 +1,21 @@
 const path = require("path");
 const fs = require("fs");
 let tasks = require(path.resolve("db.json"));
-
 const deleteTask = (req, res) => {
-    const id = req.params.uuid;
-    let index = -1;
-    for (let i = 0; i < tasks.todos.length; i++) {
-        if (tasks.todos[i].uuid == id) {
-            index = i;
-            break;
+    try {
+        const id = req.params.uuid;
+        const isCorrectElem = tasks.todos.find(item => item.uuid === id);
+        if (isCorrectElem && tasks.todos.length) {
+            const newTaskArray = tasks.todos.filter((item) => item.uuid !== id)
+            tasks.todos = newTaskArray;
+            fs.writeFileSync("db.json", JSON.stringify(tasks));
+            res.status(200).send(isCorrectElem);
+        } else {
+            res.status(205).send("error")
         }
-    }
-    if (index > -1) {
-        const task = tasks.todos.splice(index, 1)[0];
-        fs.writeFileSync("db.json", JSON.stringify(tasks));
-        console.log("found");
-        res.send(task);
-    } else {
-        res.status(404).send();
-        console.log("not found");
+    } catch (err) {
+        console.log(err);
+        res.status(404).send(err);
     }
 };
 module.exports = deleteTask;

@@ -1,28 +1,22 @@
-const path = require('path');
-const fs = require('fs');
+const path = require("path");
+const fs = require("fs");
 let tasks = require(path.resolve("db.json"));
-const { v4 } = require("uuid");
 
 const patchTask = (req, res) => {
-    if (!req.body) return res.sendStatus(400);
-    const taskId = req.params.uuid;
-    const taskName = req.body.name;
-    const taskStatus = req.body.done;
-    let task;
-    for (let i = 0; i < tasks.todos.length; i++) {
-        if (tasks.todos[i].uuid == taskId) {
-            task = tasks.todos[i];
-            break;
+    console.log(req.params.uuid)
+    try {
+        console.log(req.params);
+        console.log(tasks.todos.length);
+        const taskId = req.params.uuid;
+        const itemIndex = tasks.todos.find((el) => el.uuid === taskId);
+        if (tasks.todos.length) {
+            itemIndex.name = req.body.name;
+            itemIndex.done = req.body.done;
         }
-    }
-    if (task) {
-        task.name = taskName;
-        task.done = taskStatus;
         fs.writeFileSync("db.json", JSON.stringify(tasks));
-        res.send(task);
-    }
-    else {
-        res.done(404).send(task);
+        res.status(200).send(itemIndex);
+    } catch (err) {
+        res.status(404).send({ message: 'Task not found' });
     }
 }
 
