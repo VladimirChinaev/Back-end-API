@@ -4,22 +4,24 @@ const tasks = require(path.resolve("db.json"));
 const get = async (req, res) => {
     const filterByDoneUndone = req.query.filterBy || false;
     const filterDyAscDesc = req.query.order || "desc";
+    console.log(req.query.page);
     const page = req.query.page || 1;
     const limit = req.query.limit || 5;
-    const pageNumbers = [];
     const offset = page * limit - limit;
-    let filteredTasks;
+    let filteredTasks = tasks.todos;
     if (filterByDoneUndone) {
-        filteredTasks = tasks.todos.filter((el) => el.done === filterByDoneUndone);
+        filteredTasks = filteredTasks.filter((el) => el.done === filterByDoneUndone);
     }
     if (filterDyAscDesc === "desc") {
         filteredTasks = filteredTasks.sort((a, b) => a.updatedAtt < b.updatedAtt);
     }
+    const numberOfTasks = filteredTasks.length;
     filteredTasks = filteredTasks.slice(offset, offset + limit);
     res.send({
         page,
         limit,
-        info: filteredTasks, page, limit
+        count: numberOfTasks,
+        info: filteredTasks,
     });
 };
 module.exports = get;
