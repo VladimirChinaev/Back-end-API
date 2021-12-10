@@ -1,18 +1,19 @@
 const express = require("express");
 const app = express();
-const router = require('./routes/routes');
 const cors = require('cors');
 
 
-const PORT = process.env.PORT || 3502;
+const PORT = process.env.PORT || 3503;
 
 
 app.use(cors());
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/api', router);
+const recursive = require('recursive-readdir-sync');
+
+recursive(`${__dirname}/routes`)
+    .forEach(file => app.use('/api', require(file)));
 
 
 app.listen(PORT, () => {
