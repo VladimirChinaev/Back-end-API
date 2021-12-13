@@ -12,7 +12,6 @@ module.exports = router.post("/todos", async (req, res) => {
         }
         const name = req.body.name;
         const repeatTask = await Task.findOne({ where: { name } });
-        console.log(repeatTask);
         if (repeatTask) {
             return res.status(400).json("Такая задача уже есть!");
         }
