@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3504;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use("api/auth", require("./routes/auth.routes"));
 
 const recursive = require('recursive-readdir-sync');
 
