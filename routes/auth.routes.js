@@ -1,20 +1,20 @@
 const { Router } = require("express");
 const { User } = require("../models");
 const { check, validationResult } = require("express-validator");
+const config = require("dotenv");
 const bcrypt = require("bcrypt");
-const e = require("express");
+const jwt = require("jsonwebtoken");
 const router = Router();
 
-// /api/auth/register
-module.export = router.post("/register",
+// /api/login
+module.export = router.post("/login",
     [
-        check("email", "worng email").isEmail(),
-        check("password", "Minimum password length 6 characters")
-            .isLength({ min: 6 })
+        check("email", "Write correct email").normalizeEmail().isEmail(),
+        check("password", "Write correct password").exists()
     ],
     async (req, res) => {
+        console.log("___________________1_______________________");
         try {
-            console.log("__________________________2______________________________");
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({
@@ -22,31 +22,31 @@ module.export = router.post("/register",
                     message: "Wrong data"
                 })
             }
-            console.log("__________________________3______________________________");
             const { email, password } = req.body;
-            console.log("__________________________4______________________________");
-            console.log(email, password);
-            const candidate = await User.findOne({ where: { email } });
-            console.log(candidate);
-
-            if (candidate) {
-                return res.status(400).json("Such user already exists");
+            console.log("___________________2_______________________");
+            const user = await User.findOne({ where: { email } });
+            if (!user) {
+                return res.status(400).json({ message: "No such user found" });
             }
-            console.log("__________________________5______________________________");
-            const hashedPassword = await bcrypt.hash(password, 12);
-            const user = new User({ email: email, password: hashedPassword })
+            console.log("___________________3_______________________");
+            const isMatch = await bcrypt.compare(password, user.password);
 
-            await user.save();
-            res.status(201).json({ message: "User was created" });
+            if (!isMatch) {
+                return res.status(400).json({ message: "Wrong password" })
+            }
+            console.log("___________________4_______________________");
+            const token = jwt.sign(
+                { userId: user.id },
+                process.env.jwtSecret,
+                { expiresIn: '1h' }
+            )
+            res.json({ token, userId: user.id })
+            console.log("___________________5_______________________");
         } catch (err) {
+            console.log(err);
             res.status(500).json({ message: "Something was wrong, try again" });
         }
 
     })
-
-// /api/auth/login
-router.post("/login", async (req, res) => {
-
-})
 
 module.exports = router;
