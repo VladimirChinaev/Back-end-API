@@ -8,6 +8,8 @@ module.exports = router.get("/todos", auth,
     async (req, res) => {
         try {
             const { userId } = res.locals;
+            console.log(1);
+            console.log(res.locals);
             const done = req.query.filterBy || false;
             const order = req.query.order || "desc";
             const page = req.query.page || 1;
