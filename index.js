@@ -12,12 +12,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
 const recursive = require('recursive-readdir-sync');
+const { sequelize } = require("./models");
 
 recursive(`${__dirname}/routes`)
     .forEach(file => app.use('/api', require(file)));
 
 
 app.listen(PORT, () => {
+    sequelize.sync()
     console.log(`Server is listening on port ${PORT}`);
 });
