@@ -1,18 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../../midlleware/auth.middleware");
 const { Task } = require('../../models');
 
 
-module.exports = router.delete("/todos/:uuid", async (req, res) => {
-    try {
-        const id = req.params.uuid;
-        const isCorrectElem = await Task.findByPk(id);
-        if (isCorrectElem) {
-            isCorrectElem.destroy();
+module.exports = router.delete("/todos/:uuid", auth,
+    async (req, res) => {
+        try {
+            const id = req.params.uuid;
+            const isCorrectElem = await Task.findByPk(id);
+            if (isCorrectElem) {
+                isCorrectElem.destroy();
+            }
+            res.sendStatus(200);
+        } catch (err) {
+            console.log(err);
+            res.status(404).send(err);
         }
-        res.sendStatus(200);
-    } catch (err) {
-        console.log(err);
-        res.status(404).send(err);
-    }
-});
+    });

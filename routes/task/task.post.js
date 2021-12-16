@@ -9,11 +9,11 @@ module.exports = router.post("/todos", auth,
             if (!req.body.name) {
                 return res.status(400).json(" Поле name пустое");
             }
-            if (["done", "undone"].includes(req.body.done)) {
+            if (!["done", "undone"].includes(req.body.done)) {
                 return res.status(400).json("Не соотвествует запросу")
             }
             const name = req.body.name;
-            const { userId } = res.locals;
+            const { userId } = res.locals
 
             const isExists = await Task
                 .findOne({

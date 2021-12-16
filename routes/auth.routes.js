@@ -34,7 +34,7 @@ module.export = router.post("/login",
             const token = jwt.sign(
                 { userId: user.id },
                 process.env.jwtSecret,
-                { expiresIn: '1h' }
+                { expiresIn: '5h' }
             )
             res.json({ token, userId: user.id })
         } catch (err) {
