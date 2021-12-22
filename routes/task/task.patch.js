@@ -7,6 +7,7 @@ const { Task } = require('../../models');
 module.exports = router.patch("/todos/:uuid", auth,
     async (req, res) => {
         try {
+            console.log(req.body);
             const taskId = req.params.uuid;
             const itemIndex = await Task.findByPk(taskId);
             if (itemIndex) {

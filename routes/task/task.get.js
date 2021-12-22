@@ -11,7 +11,6 @@ module.exports = router.get("/todos", auth,
             console.log(1);
             console.log(res.locals);
             const done = req.query.filterBy || false;
-            const order = req.query.order || "desc";
             const page = req.query.page || 1;
             const limit = req.query.limit || 5;
             const offset = page * limit - limit;
@@ -28,7 +27,7 @@ module.exports = router.get("/todos", auth,
                     limit,
                     offset,
                     where,
-                    order: [["createdAt", order]]
+                    order: [["order", "ASC"]]
                 })
             return res.json({
                 page,

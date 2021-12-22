@@ -13,13 +13,11 @@ module.exports = router.post("/todos", auth,
                 return res.status(400).json("Не соотвествует запросу")
             }
             const name = req.body.name;
-            const { userId } = res.locals
-
+            const { userId } = res.locals;
             const isExists = await Task
                 .findOne({
                     where: { name, userId }
                 })
-
             if (isExists) {
                 return res.status(400).json("Такая задача уже есть!");
             }

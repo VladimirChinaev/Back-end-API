@@ -14,15 +14,14 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
-      createdAt: {
+      createdAtt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updatedAtt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-
     });
   },
   down: async (queryInterface, Sequelize) => {
